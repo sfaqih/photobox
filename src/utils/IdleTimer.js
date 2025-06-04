@@ -28,12 +28,12 @@ function useIdle({ onIdle, idleTime }) {
   };
 
   const displayMinutes = (milliseconds) => {
-    const minutes = Math.floor(milliseconds / 60000);
+    const minutes = Math.floor((milliseconds / (1000 * 60)) % 60);;
     return minutes;
   }
 
   const displaySeconds = (milliseconds) => {
-    const sec = Math.floor(milliseconds / 1000);
+    const sec = Math.floor((milliseconds / 1000) % 60);;
     return sec;
   }  
 
