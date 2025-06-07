@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-const Background = ({ children, className = "" }) => {
+const Background = ({ children, className = "", callbackClick }) => {
   const [backgroundImage, setBackgroundImage] = useState("");
 
   useEffect(() => {
@@ -28,7 +28,7 @@ const Background = ({ children, className = "" }) => {
   };
 
   return (
-    <div className={`${className}`} style={style}>
+    <div className={`${className}`} style={style} onClick={callbackClick}>
       {children}
     </div>
   );
