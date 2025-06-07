@@ -44,8 +44,6 @@ export default function Buttons() {
         }
     }, [loginSession]);
 
-    console.log("Tesszz");
-
     return (
         <>
             <div className="relative">
