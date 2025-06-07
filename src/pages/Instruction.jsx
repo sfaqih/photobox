@@ -19,7 +19,7 @@ export default function Instruction() {
     }
     return (
         <>
-        <Background>
+        <Background callbackClick={handleNext}>
         <HeaderPage onBack={handleBack} title={'Langkah Berfoto di PixiBox'} timer={preSessionTimer}></HeaderPage>
             <div className="px-10" onClick={handleNext}>
                 <Cards></Cards>
