@@ -36,6 +36,10 @@ export default function Buttons() {
         navigate('/setting');
     }
 
+    const navigateCamera = () => {
+        navigate('/select-template');
+    }
+
     useEffect(() => {
         if (!loginSession?.isLogin) {
             window.electronAPI.maximizeWindow().then(() => {
@@ -50,6 +54,12 @@ export default function Buttons() {
                 <div className="z-20 text-white flex flex-col shrink-0 grow-0 justify-around 
                     fixed bottom-0 right-0 right-5 rounded-lg
                     mr-1 mb-5 lg:mr-5 lg:mb-5 xl:mr-10 xl:mb-10 cursor-pointer">
+
+                    {/* Button Camera */}
+                    {isUnlocked && loginSession?.isLogin && <div className="p-3 my-1 rounded-full border-4 border-white bg-pink-500" onClick={navigateCamera}>
+                        <Cog size={30} />
+                    </div>}
+
                     {/* Button Configuration */}
                     {isUnlocked && loginSession?.isLogin && <div className="p-3 my-1 rounded-full border-4 border-white bg-pink-500" onClick={handleOnConfig}>
                         <Cog size={30} />

@@ -36,7 +36,6 @@ export default defineConfig({
       ],
       input: {
         main: path.resolve(__dirname, 'index.html'),
-        template: path.resolve(__dirname, 'template.html')
       }
     },
   },

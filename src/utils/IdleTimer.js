@@ -37,10 +37,12 @@ function useIdle({ onIdle, idleTime }) {
     return sec;
   }  
 
-  const { getRemainingTime, getLastActiveTime } = useIdleTimer({
+  const { getRemainingTime, getLastActiveTime, resume } = useIdleTimer({
     timeout: 1000 * 60 * idleTime,
     onIdle: handleOnIdle,
     debounce: 500,
+    onAction: () => resume,
+    onActive: () => console.log("Testt23")
   });
 
   const remainingFormatted = (remaining) => {

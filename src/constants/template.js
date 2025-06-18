@@ -16,5 +16,5 @@ export const TEMPLATE_PAPER = {
 export const DefaultPaper = TEMPLATE_PAPER['4R'];
 
 export const DefaultScale = 0.4;
-export const AddPreviewScale = 0.7;
+export const AddPreviewScale = 0.8;
   

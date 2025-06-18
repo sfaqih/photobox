@@ -12,7 +12,8 @@ export default function Landing() {
     const [isUnlocked, setIsUnlocked] = useState(false);
 
     const handleNext = () => {
-        navigate('/instruction');
+        // navigate('/instruction');
+        navigate('/test-camera');
     }
 
     useEffect(() => {

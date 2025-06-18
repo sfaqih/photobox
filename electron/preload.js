@@ -31,4 +31,6 @@ contextBridge.exposeInMainWorld("electronAPI", {
 
   getSetting: () => ipcRenderer.invoke("db:getSetting"),
   saveSetting: (data) => ipcRenderer.invoke("db:saveSetting", data),
+  
+  takePicture: (folder) => ipcRenderer.invoke("takePicture", folder)
 });

@@ -7,18 +7,19 @@ import { ChevronDown, Minus, Plus, User } from "lucide-react";
 
 export default function Package() {
     const navigate = useNavigate();
-    const {settings} = usePhotobox();
+    const {settings, photoSession, setPhotoSession} = usePhotobox();
     const preSessionTimer = settings?.preSession || 1;
     const [copies, setCopies] = useState(1);
-    const pricePerCopy = 5000;
-    const basePrice = 25000 - pricePerCopy;
+    const pricePerCopy = settings?.printPrice;
+    const basePrice = settings?.basePrice - pricePerCopy;
 
     const handleBack = () => {
         navigate('/instruction');
     }
 
     const handleNext = () => {
-        navigate('/');
+        setPhotoSession({...photoSession, amount: totalPrice, printCopies: copies})
+        navigate('/choose-payment');
     }
 
     const incrementCopies = () => {
@@ -42,7 +43,7 @@ export default function Package() {
     return (
         <>
         <Background>
-        <HeaderPage onBack={() => navigate('/')} title={'Pilih Jumlah Cetak'} timer={preSessionTimer}></HeaderPage>
+        <HeaderPage onBack={handleBack} title={'Pilih Jumlah Cetak'}></HeaderPage>
             <div className="w-full flex grid justify-center">
                             <div className="w-full max-w-md">
                 {/* Main Card */}
@@ -147,7 +148,7 @@ export default function Package() {
                     </div>
                     
                     {/* Next Button */}
-                    <button className="w-full bg-gradient-to-r from-yellow-400 to-orange-400 hover:from-yellow-500 hover:to-orange-500 text-white font-bold py-4 px-6 rounded-2xl shadow-lg transition-all duration-200 transform hover:scale-105 active:scale-95 flex items-center justify-center">
+                    <button onClick={handleNext} className="w-full bg-gradient-to-r from-yellow-400 to-orange-400 hover:from-yellow-500 hover:to-orange-500 text-white font-bold py-4 px-6 rounded-2xl shadow-lg transition-all duration-200 transform hover:scale-105 active:scale-95 flex items-center justify-center">
                     <span className="text-lg mr-2">Next</span>
                     <ChevronDown size={20} className="rotate-[-90deg]" />
                     </button>

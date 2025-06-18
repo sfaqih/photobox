@@ -2,7 +2,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Stage, Layer, Image as KonvaImage, Transformer, Rect, Group } from 'react-konva';
 import { useNavigate } from 'react-router-dom';
-import { DefaultPaper, DefaultScale } from '../../constants/template';
+import { AddPreviewScale, DefaultPaper, DefaultScale } from '../../constants/template';
 import { usePhotobox } from '../../contexts/studio';
 import PhotoInFrame from './PhotoInFrame.jsx';
 // import { handleZoomPhoto, handleZoomToggle, getCenter, getDistance, handlePhotoPositionChange, handlePhotoScaleChange } from '../../utils/ZoomCanvas';
@@ -29,7 +29,7 @@ const CanvasEditor = ({
     const scaling = DefaultScale;
     const scalingWidth = DefaultScale;
 
-    const { photoStudioSession, setPhotoStudioSession } = usePhotobox();
+    const { photoBoxSession, setPhotoboxSession } = usePhotobox();
 
     const [lastTap, setLastTap] = useState(0);
     const [stageZoom, setStageZoom] = useState(1);
@@ -102,8 +102,8 @@ const CanvasEditor = ({
                 height: canvasSize.height
             });
         });
-        console.debug("photoStudioSession: ", photoStudioSession);
-        // const frames = photoStudioSession?.frames?.length > 0 ? photoStudioSession.frames : selectedTemplate?.frames;
+        console.debug("photoBoxSession: ", photoBoxSession);
+        // const frames = photoBoxSession?.frames?.length > 0 ? photoBoxSession.frames : selectedTemplate?.frames;
         const frames = selectedTemplate?.frames;
         setFrames(frames);
     };
@@ -164,8 +164,8 @@ const CanvasEditor = ({
             return frame;
         });
         setFrames(updatedFrames);
-        setPhotoStudioSession({
-            ...photoStudioSession,
+        setPhotoboxSession({
+            ...photoBoxSession,
             frames: updatedFrames
         })
     };
@@ -193,10 +193,10 @@ const CanvasEditor = ({
               frame.photo && (
                 <Group
                   key={`frame-group-${frame.id}`}
-                  x={frame.x * DefaultScale}
-                  y={frame.y * DefaultScale}
+                  x={frame.x * DefaultScale * AddPreviewScale}
+                  y={frame.y * DefaultScale * AddPreviewScale}
                   clipFunc={(ctx) => {
-                    ctx.rect(0, 0, frame.width * DefaultScale, frame.height * DefaultScale);
+                    ctx.rect(0, 0, frame.width * DefaultScale * AddPreviewScale, frame.height * DefaultScale * AddPreviewScale);
                   }}
                 >
                   <PhotoInFrame
@@ -283,10 +283,10 @@ const CanvasEditor = ({
 
         if (!checkPhotoFrames) return alert('Pastikan semua frame terisi oleh foto...');
 
-        setPhotoStudioSession({
+        setPhotoboxSession({
             frames,
-            dirPath: localStorage.getItem("CustomerFolder") || null,
-            printDirPath: photoStudioSession.printDirPath
+            dirPath: "/Users/sfaqih/Documents/Test",
+            printDirPath: "/Users/sfaqih/Documents/Test/print"
         });
 
         return navigate('/select-filter');
@@ -332,7 +332,7 @@ const CanvasEditor = ({
     }
 
     return (
-        <div className="w-2/5 p-4 flex justify-center items-center h-full">
+        <div className="w-1/3 flex justify-end h-full">
             <div className='editor-wrapper'>
             <div
                 className=""
@@ -341,8 +341,8 @@ const CanvasEditor = ({
                 ref={containerRef}
             >
                 <Stage
-                    width={canvasSize.width * DefaultScale}
-                    height={canvasSize.height * DefaultScale}
+                    width={canvasSize.width * DefaultScale * AddPreviewScale}
+                    height={canvasSize.height * DefaultScale * AddPreviewScale}
                     ref={stageRef}
                     dragBoundFunc={(pos) => {
                         const stage = stageRef.current;
@@ -387,10 +387,8 @@ const CanvasEditor = ({
                                 image={templateImage}
                                 x={0}
                                 y={0}
-                                width={DefaultPaper.width * scalingWidth}
-                                height={DefaultPaper.height * scaling}
-                                // width={canvasSize.width / 2}
-                                // height={canvasSize.height}
+                                width={DefaultPaper.width * scaling * AddPreviewScale}
+                                height={DefaultPaper.height * scaling * AddPreviewScale}
                                 listening={false}
                             />
                         )}
@@ -402,10 +400,10 @@ const CanvasEditor = ({
                             <Rect
                                 key={frame.id}
                                 id={frame.id}
-                                x={frame.x * scalingWidth}
-                                y={frame.y * scaling}
-                                width={frame.width * scalingWidth}
-                                height={frame.height * scaling}
+                                x={frame.x * scaling * AddPreviewScale}
+                                y={frame.y * scaling * AddPreviewScale}
+                                width={frame.width * scaling * AddPreviewScale}
+                                height={frame.height * scaling * AddPreviewScale}
                                 stroke={activeDropZone === frame.id ? '#4299e1' : 'white'}
                                 strokeWidth={2}
                                 dash={[5, 5]}

@@ -20,7 +20,7 @@ const Background = ({ children, className = "" }) => {
   }
 
   const style = {
-    backgroundImage: backgroundImage ? `url(${backgroundImage})` : "none",
+    backgroundImage: backgroundImage ? `url(${backgroundImage})` : "url(./images/background.png)",
     backgroundSize: "cover",
     backgroundPosition: "center",
     backgroundRepeat: "no-repeat",

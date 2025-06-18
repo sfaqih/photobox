@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { ArrowLeftCircle } from "lucide-react"
 import useIdle from "../utils/IdleTimer"
+import CountdownTimer from "./CountdownTimer";
 
 export const HeaderPage = ({ onBack, title, timer }) => {
 
@@ -33,7 +34,8 @@ export const HeaderPage = ({ onBack, title, timer }) => {
             </button>            
         </div>
         <div className="text-2xl">{title}</div>
-        <div className="">{timer && remaining && (<div className="bg-white border-2 border-stone-900 shadow-sm rounded-sm px-10 py-2 text-black">{remaining}</div>)}
+        <div className="">
+          <CountdownTimer/>
         </div>
       </div>
 

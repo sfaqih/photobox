@@ -5,6 +5,7 @@ const fs = require("fs");
 const db = require('./db.cjs');
 const log = require('electron-log');
 const { compressImagesFromFolder } = require('./utils.js');
+const { takePhoto } = require('../electron/camera.js');
 
 // Setup logging
 log.transports.file.level = 'info';
@@ -171,6 +172,17 @@ ipcMain.handle("template:upload", (e, fileName, dataUrl) => {
   return filePath;
 });
 
+
+//IPC CAMERA CONTROL
+ipcMain.handle("takePicture", async(e, folderPath) => {
+  try {
+    const resultPath = await takePhoto(folderPath); // e.g., "D:\\Photobooth\\photos"
+    return { success: true, path: resultPath };
+  } catch (err) {
+    return { success: false, error: err.message };
+  }  
+})
+
 async function getPrinters() {
   const win = new BrowserWindow({ show: false }); // Invisible window
 
@@ -204,7 +216,57 @@ function createWindow() {
   // win.loadFile(path.join(__dirname, '../react-dist/index.html'));
   win.loadURL("http://localhost:5173/"); // If running React dev server
   win.webContents.openDevTools();
+
+  // win.webContents.session.webRequest.onBeforeSendHeaders(
+  //   (details, callback) => {
+  //     console.debug("onBeforeSendHeaders: ", details.requestHeaders)
+  //     callback({ requestHeaders: { Origin: '*', ...details.requestHeaders } });
+  //   },
+  // );
+
+  // win.webContents.session.webRequest.onHeadersReceived((details, callback) => {
+  //   console.debug("responseHeaders: ", details)
+  //   callback({
+  //     responseHeaders: {
+  //       'Access-Control-Allow-Origin': ['*'],
+  //       // We use this to bypass headers
+  //       'Access-Control-Allow-Headers': ['*'],
+  //       ...details.responseHeaders,
+  //     },
+  //   });
+  // });  
 }
+
+function handleDevTools(win = BrowserWindow.getFocusedWindow()) {
+  const isOpened = win.webContents.isDevToolsOpened();
+
+  if(isOpened) win.webContents.closeDevTools();
+  if(!isOpened) win.webContents.openDevTools()
+
+}
+
+function handleRefresh(win = BrowserWindow.getFocusedWindow()) {
+  win.webContents.reloadIgnoringCache();
+}
+
+app.whenReady().then(() => {
+  globalShortcut.register('Ctrl+F12', () => {
+    handleDevTools()
+  });  
+  globalShortcut.register('F12', () => {
+    handleDevTools()
+  });
+  globalShortcut.register('F5', () => {
+    handleRefresh()
+  });
+  globalShortcut.register('Command+Alt+I', () => {
+    handleDevTools()
+  });
+  globalShortcut.register('Command+Ctrl+R', () => {
+    handleRefresh()
+  });  
+  
+}).then(createWindow)
 
 ipcMain.handle('alert', async (e, title, message) => {
   new Notification({
